@@ -22,9 +22,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./
         with:
-          access_token: { { github.TOKEN } }
-          flagsmithUrl: { { secret.FLAGSMITHURL } }
-          apitokenflagsmith: { { secret.APITOKENFLAGSMITH } }
-          owner: { { github.GITHUB_REPOSITORY_OWNER } }
-          repo: { { github.GITHUB_REPOSITORY } }
-          path: { { secret.FILEPATH } }
+          access_token: ${{ github.TOKEN }}
+          flagsmithUrl: ${{ secret.FLAGSMITHURL }}
+          apitokenflagsmith: ${{ secret.APITOKENFLAGSMITH }}
+          owner: ${{ github.GITHUB_REPOSITORY_OWNER }}
+          repo: ${{ github.GITHUB_REPOSITORY }}
+          path: ${{ secret.FILEPATH }}
