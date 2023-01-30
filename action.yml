@@ -1,13 +1,30 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: "Git diff notification messages on Slack linked to JIRA tickets"
+description: "Post a message to Slack with Incoming Webhook"
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  access_token:
+    description: "Access token to get github file action, github token"
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+    default: "${{ github.TOKEN }}"
+  flagsmithUrl:
+    description: "Flagsmith  url to get the current flags which are defined in Flagsmith"
+    required: true
+  apitokenflagsmith:
+    description: "API token to call the Flagsmith API"
+    required: true
+  owner:
+    description: "Github organization name"
+    required: true
+    default: "${{ github.GITHUB_REPOSITORY_OWNER }}"
+  repo:
+    description: "The repository for which we run the featureflag removal"
+    required: true
+    default: "{{ github.GITHUB_REPOSITORY }}"
+  path:
+    description: "Path to the file in the repo to run the diff"
+    required: true
+branding:
+  icon: "message-circle"
+  color: "white"
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node16"
+  main: "dist/index.js"
