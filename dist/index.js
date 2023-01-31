@@ -16978,7 +16978,12 @@ async function run() {
     for (const key in flagsmithFlags) {
       if (Object.hasOwnProperty.call(flagsmithFlags, key)) {
         const element = flagsmithFlags[key];
-        flagsReadyToArchive.push(element);
+        if (!githubFlags.includes(element.name)) {
+          flagsReadyToArchive.push(element);
+          core.info(`flag ready to remove ${element.name}`);
+        } else {
+          core.info(`flag still exists ${element.name}`);
+        }
       }
     }
 
