@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: testing
         run: |
+          echo ${{ env }}
+          echo ${{ vars }}
           echo ${{ env.apitokenflagsmith }}
           echo ${{ github.token }}
           echo ${{ env.flagsmithUrl }}
