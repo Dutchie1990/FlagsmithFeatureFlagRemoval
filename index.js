@@ -50,7 +50,13 @@ async function run() {
     }
 
     core.info(`Flags defined in flagssmith: ${flagsmithFlags}`);
-    core.info(`Flags ready to archive: ${flagsReadyToArchive}`);
+
+    for (const key in flagsReadyToArchive) {
+      if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
+        const element = flagsReadyToArchive[key];
+        core.info(`Flags ready to archive: ${element.name}`);
+      }
+    }
 
     const archivedFlags = await flagsmithAPI.getArchivedFlags(
       flagsmithUrl,
@@ -69,7 +75,13 @@ async function run() {
       }
     }
 
-    core.info(`Flags ready to delete: ${flagsForDeletion}`);
+    for (const key in flagsForDeletion) {
+      if (Object.hasOwnProperty.call(flagsForDeletion, key)) {
+        const element = flagsForDeletion[key];
+        core.info(`Flags ready to archive: ${element.name}`);
+      }
+    }
+
     core.info("Done");
   } catch (error) {
     core.setFailed(error.message);
