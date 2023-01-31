@@ -24,6 +24,7 @@ jobs:
         with:
           access_token: ${{ secrets.GITHUB }}
           flagsmithUrl: ${{ vars.FLAGSMITHURL }}
+          flagsmithprojectid: ${{ vars.FLAGSMITHPROJECTID}}
           apitokenflagsmith: ${{ secrets.APITOKENFLAGSMITH }}
           owner: "AlphaFounders"
           repo: "sales-crm-frontend"

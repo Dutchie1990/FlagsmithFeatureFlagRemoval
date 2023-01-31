@@ -11,6 +11,9 @@ inputs:
   apitokenflagsmith:
     description: "API token to call the Flagsmith API"
     required: true
+  flagsmithprojectid:
+    description: "Project id from the Flagsmith repository"
+    required: true
   owner:
     description: "Github organization name"
     required: true

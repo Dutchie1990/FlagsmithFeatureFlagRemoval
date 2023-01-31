@@ -16952,6 +16952,7 @@ async function run() {
     const repo = core.getInput("repo");
     const path = core.getInput("path");
     const githubAuth = core.getInput("access_token");
+    const flagsmithProjectId = core.getInput("flagsmithprojectid");
 
     core.info(`values: ${flagsReadyToArchive}  ...`);
     core.info(`values: ${flagsmithUrl}  ...`);
@@ -16960,6 +16961,7 @@ async function run() {
     core.info(`values: ${repo}  ...`);
     core.info(`values: ${path}  ...`);
     core.info(`values: ${githubAuth}  ...`);
+    core.info(`values: ${flagsmithProjectId}  ...`);
 
     const githubFlags = await getGithubConfigFlags(
       githubAuth,
