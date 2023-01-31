@@ -23,12 +23,12 @@ jobs:
       - uses: ./
         with:
           access_token: ${{ github.token }}
-          flagsmithUrl: ${{ env.FLAGSMITHURL }}
-          apitokenflagsmith: ${{ secrets.APITOKENFLAGSMITH }}
+          flagsmithUrl: $flagsmithUrl
+          apitokenflagsmith: $apitokenflagsmith
           owner: "AlphaFounders"
           repo: "sales-crm-frontend"
+          path: $path
+        env:
           path: ${{ env.FILEPATH }}
-        run: |
-          echo ${{ env.FILEPATH }}
-          echo ${{ secrets.APITOKENFLAGSMITH }}
-          echo ${{ env.FLAGSMITHURL }}
+          apitokenflagsmith: ${{ secrets.APITOKENFLAGSMITH }}
+          flagsmithUrl: ${{ env.FLAGSMITHURL }}
