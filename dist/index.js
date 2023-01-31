@@ -5,7 +5,6 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 var axios = __nccwpck_require__(1441);
-const core = __nccwpck_require__(2186);
 
 function getFlagsmithFlags(url, auth) {
   var config = {
@@ -21,7 +20,6 @@ function getFlagsmithFlags(url, auth) {
     })
     .catch(function (error) {
       console.log(error);
-      core.info("Flags defined in the Sales CRM", error);
     });
 }
 
@@ -52,7 +50,6 @@ module.exports = { getFlagsmithFlags, getArchivedFlags };
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const { Octokit } = __nccwpck_require__(5375);
-const core = __nccwpck_require__(2186);
 
 function getGithubConfigFlags(auth, owner, repo, path) {
   const flags = [];
@@ -70,7 +67,6 @@ function getGithubConfigFlags(auth, owner, repo, path) {
       },
     })
     .then((response) => {
-      core.info("Flags defined in the Sales CRM", response);
       const extractedValues = response.data.split(",");
       extractedValues.forEach((el) => {
         var mySubString = el.substring(
@@ -84,7 +80,6 @@ function getGithubConfigFlags(auth, owner, repo, path) {
     })
     .catch((er) => {
       console.log(er);
-      core.info("Flags defined in the Sales CRM", er);
     });
 }
 
@@ -16974,7 +16969,7 @@ async function run() {
       path
     );
 
-    core.info("Flags defined in the Sales CRM", githubFlags);
+    core.info(`Flags defined in the Sales CRM: ${githubFlags}`);
 
     const flagsmithFlags = await flagsmithAPI.getFlagsmithFlags(
       flagsmithUrl,
@@ -16988,8 +16983,8 @@ async function run() {
       }
     }
 
-    core.info("Flags defined in flagssmith", flagsmithFlags);
-    core.info("Flags ready to archive", flagsReadyToArchive);
+    core.info(`Flags defined in flagssmith: ${flagsmithFlags}`);
+    core.info(`Flags ready to archive: ${flagsReadyToArchive}`);
 
     const archivedFlags = await flagsmithAPI.getArchivedFlags(
       flagsmithUrl,
@@ -17008,7 +17003,7 @@ async function run() {
       }
     }
 
-    core.info("Flags ready to delete", flagsForDeletion);
+    core.info(`Flags ready to delete: ${flagsForDeletion}`);
     core.info("Done");
   } catch (error) {
     core.setFailed(error.message);

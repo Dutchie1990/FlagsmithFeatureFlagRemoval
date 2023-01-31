@@ -28,7 +28,7 @@ async function run() {
       path
     );
 
-    core.info("Flags defined in the Sales CRM", githubFlags);
+    core.info(`Flags defined in the Sales CRM: ${githubFlags}`);
 
     const flagsmithFlags = await flagsmithAPI.getFlagsmithFlags(
       flagsmithUrl,
@@ -42,8 +42,8 @@ async function run() {
       }
     }
 
-    core.info("Flags defined in flagssmith", flagsmithFlags);
-    core.info("Flags ready to archive", flagsReadyToArchive);
+    core.info(`Flags defined in flagssmith: ${flagsmithFlags}`);
+    core.info(`Flags ready to archive: ${flagsReadyToArchive}`);
 
     const archivedFlags = await flagsmithAPI.getArchivedFlags(
       flagsmithUrl,
@@ -62,7 +62,7 @@ async function run() {
       }
     }
 
-    core.info("Flags ready to delete", flagsForDeletion);
+    core.info(`Flags ready to delete: ${flagsForDeletion}`);
     core.info("Done");
   } catch (error) {
     core.setFailed(error.message);
