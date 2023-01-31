@@ -17018,7 +17018,7 @@ async function run() {
     for (const key in flagsForDeletion) {
       if (Object.hasOwnProperty.call(flagsForDeletion, key)) {
         const element = flagsForDeletion[key];
-        core.info(`Flags ready to archive: ${element.name}`);
+        core.info(`Flags ready to delete: ${element.name}`);
       }
     }
 
