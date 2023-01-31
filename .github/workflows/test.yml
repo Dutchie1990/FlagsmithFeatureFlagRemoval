@@ -18,17 +18,18 @@ jobs:
   # test action works running from the graph
   test:
     runs-on: ubuntu-latest
+    env:
+      path: ${{ env.FILEPATH }}
+      apitokenflagsmith: ${{ secrets.APITOKENFLAGSMITH }}
+      flagsmithUrl: ${{ env.FLAGSMITHURL }}
+
     steps:
       - uses: actions/checkout@v3
       - uses: ./
         with:
           access_token: ${{ github.token }}
-          flagsmithUrl: $flagsmithUrl
-          apitokenflagsmith: $apitokenflagsmith
+          flagsmithUrl: ${{ env.flagsmithUrl }}
+          apitokenflagsmith: ${{ env.apitokenflagsmith }}
           owner: "AlphaFounders"
           repo: "sales-crm-frontend"
-          path: $path
-        env:
-          path: ${{ env.FILEPATH }}
-          apitokenflagsmith: ${{ secrets.APITOKENFLAGSMITH }}
-          flagsmithUrl: ${{ env.FLAGSMITHURL }}
+          path: ${{ env.path }}
