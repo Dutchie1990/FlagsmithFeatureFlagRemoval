@@ -19,22 +19,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: testing
-        run: |
-          echo ${{ toJson(env) }}
-          echo ${{ toJson(vars) }}
-          echo ${{ env.apitokenflagsmith }}
-          echo ${{ github.token }}
-          echo ${{ env.flagsmithUrl }}
-          echo ${{ env.apitokenflagsmith }}
-          echo ${{ env.path }}
-
       - uses: actions/checkout@v3
       - uses: ./
         with:
           access_token: ${{ github.token }}
-          flagsmithUrl: ${{ env.flagsmithUrl }}
-          apitokenflagsmith: ${{ env.apitokenflagsmith }}
+          flagsmithUrl: ${{ vars.flagsmithUrl }}
+          apitokenflagsmith: ${{ secret.apitokenflagsmith }}
           owner: "AlphaFounders"
           repo: "sales-crm-frontend"
-          path: ${{ env.path }}
+          path: ${{ vars.path }}
