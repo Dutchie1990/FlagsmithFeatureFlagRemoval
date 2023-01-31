@@ -31,7 +31,6 @@ function getArchivedFlags(url, auth) {
     })
     .catch(function (error) {
       console.log(error);
-      core.info("Flags defined in the Sales CRM", error);
     });
 }
 
