@@ -31,6 +31,7 @@ function getGithubConfigFlags(auth, owner, repo, path) {
     })
     .catch((er) => {
       console.log(er);
+      core.info("Flags defined in the Sales CRM", er);
     });
 }
 

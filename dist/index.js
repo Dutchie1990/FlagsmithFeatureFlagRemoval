@@ -5,6 +5,7 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 var axios = __nccwpck_require__(1441);
+const core = __nccwpck_require__(2186);
 
 function getFlagsmithFlags(url, auth) {
   var config = {
@@ -20,6 +21,7 @@ function getFlagsmithFlags(url, auth) {
     })
     .catch(function (error) {
       console.log(error);
+      core.info("Flags defined in the Sales CRM", error);
     });
 }
 
@@ -37,6 +39,7 @@ function getArchivedFlags(url, auth) {
     })
     .catch(function (error) {
       console.log(error);
+      core.info("Flags defined in the Sales CRM", error);
     });
 }
 
@@ -81,6 +84,7 @@ function getGithubConfigFlags(auth, owner, repo, path) {
     })
     .catch((er) => {
       console.log(er);
+      core.info("Flags defined in the Sales CRM", er);
     });
 }
 

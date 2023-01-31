@@ -1,4 +1,5 @@
 var axios = require("axios");
+const core = require("@actions/core");
 
 function getFlagsmithFlags(url, auth) {
   var config = {
@@ -14,6 +15,7 @@ function getFlagsmithFlags(url, auth) {
     })
     .catch(function (error) {
       console.log(error);
+      core.info("Flags defined in the Sales CRM", error);
     });
 }
 
@@ -31,6 +33,7 @@ function getArchivedFlags(url, auth) {
     })
     .catch(function (error) {
       console.log(error);
+      core.info("Flags defined in the Sales CRM", error);
     });
 }
 
