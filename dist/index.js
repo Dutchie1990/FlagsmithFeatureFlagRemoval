@@ -49,6 +49,7 @@ module.exports = { getFlagsmithFlags, getArchivedFlags };
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const { Octokit } = __nccwpck_require__(5375);
+const core = __nccwpck_require__(2186);
 
 async function getGithubConfigFlags(auth, owner, repo, path) {
   const flags = [];
@@ -66,6 +67,8 @@ async function getGithubConfigFlags(auth, owner, repo, path) {
       },
     })
     .then((response) => {
+      core.info("Flags defined in the Sales CRM", response);
+      core.debug("Flags defined in the Sales CRM", response);
       const extractedValues = response.data.split(",");
       extractedValues.forEach((el) => {
         var mySubString = el.substring(
@@ -17002,6 +17005,7 @@ async function run() {
       }
     }
 
+    core.info("Flags ready to delete", flagsForDeletion);
     core.info("Done");
   } catch (error) {
     core.setFailed(error.message);

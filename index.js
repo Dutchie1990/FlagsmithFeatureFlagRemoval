@@ -62,6 +62,7 @@ async function run() {
       }
     }
 
+    core.info("Flags ready to delete", flagsForDeletion);
     core.info("Done");
   } catch (error) {
     core.setFailed(error.message);

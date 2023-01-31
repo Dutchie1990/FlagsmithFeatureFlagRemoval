@@ -1,4 +1,5 @@
 const { Octokit } = require("@octokit/rest");
+const core = require("@actions/core");
 
 async function getGithubConfigFlags(auth, owner, repo, path) {
   const flags = [];
@@ -16,6 +17,8 @@ async function getGithubConfigFlags(auth, owner, repo, path) {
       },
     })
     .then((response) => {
+      core.info("Flags defined in the Sales CRM", response);
+      core.debug("Flags defined in the Sales CRM", response);
       const extractedValues = response.data.split(",");
       extractedValues.forEach((el) => {
         var mySubString = el.substring(
