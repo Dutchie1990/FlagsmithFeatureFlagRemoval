@@ -28,3 +28,7 @@ jobs:
           owner: "AlphaFounders"
           repo: "sales-crm-frontend"
           path: ${{ env.FILEPATH }}
+        run: |
+          echo ${{ env.FILEPATH }}
+          echo ${{ secrets.APITOKENFLAGSMITH }}
+          echo ${{ env.FLAGSMITHURL }}
