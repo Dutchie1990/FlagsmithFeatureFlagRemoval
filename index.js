@@ -62,6 +62,7 @@ async function run() {
       flagsmithUrl,
       flagsmithToken
     );
+
     const flagsForDeletion = [];
     var date = new Date();
     date.setMonth(date.getMonth() - 2);
