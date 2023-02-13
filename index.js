@@ -13,6 +13,7 @@ async function run() {
     const path = core.getInput("path");
     const githubAuth = core.getInput("access_token");
     const flagsmithProjectId = core.getInput("flagsmithprojectid");
+    const ref = "careshop-production";
 
     core.info(`values: ${flagsReadyToArchive}  ...`);
     core.info(`values: ${flagsmithUrl}  ...`);
@@ -27,7 +28,8 @@ async function run() {
       githubAuth,
       owner,
       repo,
-      path
+      path,
+      ref
     );
 
     core.info(`Flags defined in the Sales CRM: ${githubFlags}`);
@@ -42,9 +44,9 @@ async function run() {
         const element = flagsmithFlags[key];
         if (!githubFlags.includes(element.name)) {
           flagsReadyToArchive.push(element);
-          core.info(`flag ready to remove ${element.name}`);
+          core.info(`flag ready to archive ${element.name}`);
         } else {
-          core.info(`flag still exists ${element.name}`);
+          core.info(`flag still exists on both places ${element.name}`);
         }
       }
     }
