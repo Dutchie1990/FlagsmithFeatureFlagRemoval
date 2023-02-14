@@ -17044,7 +17044,7 @@ async function run() {
     for (const key in archivedFlags) {
       if (Object.hasOwnProperty.call(archivedFlags, key)) {
         const element = archivedFlags[key];
-        if (element.created_date < date.toISOString()) {
+        if (element.created_date > date.toISOString()) {
           flagsForDeletion.push(element);
         }
       }
