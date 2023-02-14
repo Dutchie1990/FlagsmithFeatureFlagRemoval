@@ -1,5 +1,4 @@
 var axios = require("axios");
-const core = require("@actions/core");
 
 async function getFlagsmithFlags(url, auth) {
   var config = {
@@ -48,7 +47,6 @@ async function archiveFlag(url, auth, flagId) {
       "Content-Type": "application/json",
     },
   };
-  core.info(config.url);
   return axios(config)
     .then(function (response) {
       return response.data;
@@ -64,10 +62,8 @@ async function deleteFlag(url, auth, flagId) {
     url: `${url}${flagId}/`,
     headers: {
       Authorization: auth,
-      "Content-Type": "application/json",
     },
   };
-  core.info(config.url);
   return axios(config)
     .then(function (response) {
       return response.data;

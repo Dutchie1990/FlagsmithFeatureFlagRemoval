@@ -5,7 +5,6 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 var axios = __nccwpck_require__(1441);
-const core = __nccwpck_require__(2186);
 
 async function getFlagsmithFlags(url, auth) {
   var config = {
@@ -54,7 +53,6 @@ async function archiveFlag(url, auth, flagId) {
       "Content-Type": "application/json",
     },
   };
-  core.info(config.url);
   return axios(config)
     .then(function (response) {
       return response.data;
@@ -70,10 +68,8 @@ async function deleteFlag(url, auth, flagId) {
     url: `${url}${flagId}/`,
     headers: {
       Authorization: auth,
-      "Content-Type": "application/json",
     },
   };
-  core.info(config.url);
   return axios(config)
     .then(function (response) {
       return response.data;
@@ -17054,7 +17050,6 @@ async function run() {
       if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
         const flag = flagsReadyToArchive[key];
         core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
-        core.info(JSON.stringify(flag));
         const response = await flagsmithAPI.archiveFlag(
           flagsmithUrl,
           flagsmithToken,
@@ -17077,13 +17072,12 @@ async function run() {
       if (Object.hasOwnProperty.call(archivedFlags, key)) {
         const flag = archivedFlags[key];
         if (flag.created_date > date.toISOString()) {
-          const response = await flagsmithAPI.archiveFlag(
+          const response = await flagsmithAPI.deleteFlag(
             flagsmithUrl,
             flagsmithToken,
             flag.id
           );
           core.info(JSON.stringify(response));
-          flagsForDeletion.push(flag.name);
         }
       }
     }
