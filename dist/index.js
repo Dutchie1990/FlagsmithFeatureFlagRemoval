@@ -17019,9 +17019,12 @@ async function run() {
       ref
     );
 
-    core.info(`Flags defined in the Sales CRM: ${githubFlags}`);
-
     const flagsmithFlags = await flagsmithAPI.getFlagsmithFlags(
+      flagsmithUrl,
+      flagsmithToken
+    );
+
+    flagsReadyToDelete = await flagsmithAPI.getArchivedFlags(
       flagsmithUrl,
       flagsmithToken
     );
@@ -17051,11 +17054,6 @@ async function run() {
       }
     }
 
-    flagsReadyToDelete = await flagsmithAPI.getArchivedFlags(
-      flagsmithUrl,
-      flagsmithToken
-    );
-
     var date = new Date();
     date.setMonth(date.getMonth() - 2);
 
@@ -17072,8 +17070,8 @@ async function run() {
         }
       }
     }
-    core.info(`${archivedFlags.count()} are archived`);
-    core.info(`${deletedFlags.count()} are deleted`);
+    core.info(`${archivedFlags.length} are archived`);
+    core.info(`${deletedFlags.length} are deleted`);
 
     core.info("Done");
   } catch (error) {
