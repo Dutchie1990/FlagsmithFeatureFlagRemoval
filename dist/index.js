@@ -41,7 +41,7 @@ async function getArchivedFlags(url, auth) {
     });
 }
 
-async function archiveFlags(url, auth, flagId) {
+async function archiveFlag(url, auth, flagId) {
   var data = JSON.stringify({
     is_archived: true,
   });
@@ -64,7 +64,31 @@ async function archiveFlags(url, auth, flagId) {
     });
 }
 
-module.exports = { getFlagsmithFlags, getArchivedFlags, archiveFlags };
+async function deleteFlag(url, auth, flagId) {
+  var config = {
+    method: "DELETE",
+    url: `${url}${flagId}/`,
+    headers: {
+      Authorization: auth,
+      "Content-Type": "application/json",
+    },
+  };
+  core.info(config.url);
+  return axios(config)
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      return error;
+    });
+}
+
+module.exports = {
+  getFlagsmithFlags,
+  getArchivedFlags,
+  archiveFlag,
+  deleteFlag,
+};
 
 
 /***/ }),
@@ -17023,7 +17047,7 @@ async function run() {
         const flag = flagsReadyToArchive[key];
         core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
         core.info(JSON.stringify(flag));
-        const response = await flagsmithAPI.archiveFlags(
+        const response = await flagsmithAPI.archiveFlag(
           flagsmithUrl,
           flagsmithToken,
           flag.id
@@ -17043,9 +17067,15 @@ async function run() {
 
     for (const key in archivedFlags) {
       if (Object.hasOwnProperty.call(archivedFlags, key)) {
-        const element = archivedFlags[key];
-        if (element.created_date > date.toISOString()) {
-          flagsForDeletion.push(element);
+        const flag = archivedFlags[key];
+        if (flag.created_date > date.toISOString()) {
+          const response = await flagsmithAPI.archiveFlag(
+            flagsmithUrl,
+            flagsmithToken,
+            flag.id
+          );
+          core.info(JSON.stringify(response));
+          flagsForDeletion.push(flag.name);
         }
       }
     }

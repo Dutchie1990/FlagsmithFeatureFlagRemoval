@@ -58,7 +58,7 @@ async function run() {
         const flag = flagsReadyToArchive[key];
         core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
         core.info(JSON.stringify(flag));
-        const response = await flagsmithAPI.archiveFlags(
+        const response = await flagsmithAPI.archiveFlag(
           flagsmithUrl,
           flagsmithToken,
           flag.id
@@ -78,9 +78,15 @@ async function run() {
 
     for (const key in archivedFlags) {
       if (Object.hasOwnProperty.call(archivedFlags, key)) {
-        const element = archivedFlags[key];
-        if (element.created_date > date.toISOString()) {
-          flagsForDeletion.push(element);
+        const flag = archivedFlags[key];
+        if (flag.created_date > date.toISOString()) {
+          const response = await flagsmithAPI.archiveFlag(
+            flagsmithUrl,
+            flagsmithToken,
+            flag.id
+          );
+          core.info(JSON.stringify(response));
+          flagsForDeletion.push(flag.name);
         }
       }
     }

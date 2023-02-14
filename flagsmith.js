@@ -35,7 +35,7 @@ async function getArchivedFlags(url, auth) {
     });
 }
 
-async function archiveFlags(url, auth, flagId) {
+async function archiveFlag(url, auth, flagId) {
   var data = JSON.stringify({
     is_archived: true,
   });
@@ -58,4 +58,28 @@ async function archiveFlags(url, auth, flagId) {
     });
 }
 
-module.exports = { getFlagsmithFlags, getArchivedFlags, archiveFlags };
+async function deleteFlag(url, auth, flagId) {
+  var config = {
+    method: "DELETE",
+    url: `${url}${flagId}/`,
+    headers: {
+      Authorization: auth,
+      "Content-Type": "application/json",
+    },
+  };
+  core.info(config.url);
+  return axios(config)
+    .then(function (response) {
+      return response.data;
+    })
+    .catch(function (error) {
+      return error;
+    });
+}
+
+module.exports = {
+  getFlagsmithFlags,
+  getArchivedFlags,
+  archiveFlag,
+  deleteFlag,
+};
