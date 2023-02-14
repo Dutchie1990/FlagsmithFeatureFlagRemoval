@@ -88,6 +88,9 @@ async function run() {
     core.info(`${archivedFlags.length} are archived`);
     core.info(`${deletedFlags.length} are deleted`);
 
+    core.info(JSON.stringify(archivedFlags));
+    core.info(JSON.stringify(deletedFlags));
+
     core.info("Done");
   } catch (error) {
     core.setFailed(error.message);
