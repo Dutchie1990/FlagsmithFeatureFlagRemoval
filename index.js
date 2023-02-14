@@ -56,12 +56,12 @@ async function run() {
     for (const key in flagsReadyToArchive) {
       if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
         const flag = flagsReadyToArchive[key];
-        core.info(`Flags ready to archive: ${flag.name}`);
+        core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
         core.info(JSON.stringify(flag));
         const response = await flagsmithAPI.archiveFlags(
           flagsmithUrl,
           flagsmithToken,
-          flag.feature
+          flag.id
         );
         core.info(response);
       }
