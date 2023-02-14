@@ -46,6 +46,7 @@ function archiveFlags(url, auth, flagId) {
       Authorization: auth,
     },
   };
+  core.info(config.url);
   return axios(config)
     .then(function (response) {
       core.info(response);
