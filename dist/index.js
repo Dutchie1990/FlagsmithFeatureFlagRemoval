@@ -7,7 +7,7 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 var axios = __nccwpck_require__(1441);
 const core = __nccwpck_require__(2186);
 
-function getFlagsmithFlags(url, auth) {
+async function getFlagsmithFlags(url, auth) {
   var config = {
     method: "get",
     url: `${url}?sort_field=name&is_archived=false`,
@@ -24,7 +24,7 @@ function getFlagsmithFlags(url, auth) {
     });
 }
 
-function getArchivedFlags(url, auth) {
+async function getArchivedFlags(url, auth) {
   var config = {
     method: "get",
     url: `${url}?is_archived=true`,
@@ -41,7 +41,7 @@ function getArchivedFlags(url, auth) {
     });
 }
 
-function archiveFlags(url, auth, flagId) {
+async function archiveFlags(url, auth, flagId) {
   var config = {
     method: "patch",
     url: `${url}${flagId}`,
@@ -55,7 +55,7 @@ function archiveFlags(url, auth, flagId) {
   core.info(config.url);
   return axios(config)
     .then(function (response) {
-      return response;
+      return response.data;
     })
     .catch(function (error) {
       return error;
@@ -72,7 +72,7 @@ module.exports = { getFlagsmithFlags, getArchivedFlags, archiveFlags };
 
 const { Octokit } = __nccwpck_require__(5375);
 
-function getGithubConfigFlags(auth, owner, repo, path, ref) {
+async function getGithubConfigFlags(auth, owner, repo, path, ref) {
   const flags = [];
 
   const client = new Octokit({

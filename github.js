@@ -1,6 +1,6 @@
 const { Octokit } = require("@octokit/rest");
 
-function getGithubConfigFlags(auth, owner, repo, path, ref) {
+async function getGithubConfigFlags(auth, owner, repo, path, ref) {
   const flags = [];
 
   const client = new Octokit({
