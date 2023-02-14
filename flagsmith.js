@@ -49,11 +49,11 @@ function archiveFlags(url, auth, flagId) {
   core.info(config.url);
   return axios(config)
     .then(function (response) {
-      core.info(response);
+      core.info(JSON.stringify(response));
       return response;
     })
     .catch(function (error) {
-      core.info(error);
+      core.info(JSON.stringify(error));
       return error;
     });
 }
