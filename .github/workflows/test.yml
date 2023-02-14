@@ -30,4 +30,3 @@ jobs:
           owner: "AlphaFounders"
           repo: "sales-crm-frontend"
           path: ${{ vars.FILEPATH }}
-          flagsmithenvkey: ${{ secrets.FLAGSMITH_ENV_API_KEY }}
