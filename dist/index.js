@@ -17026,7 +17026,7 @@ async function run() {
           flagsmithToken,
           flag.id
         );
-        core.info(JSON.parse(response));
+        core.info(JSON.stringify(response));
       }
     }
 
