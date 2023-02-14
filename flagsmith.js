@@ -1,4 +1,5 @@
 var axios = require("axios");
+const core = require("@actions/core");
 
 function getFlagsmithFlags(url, auth) {
   var config = {
@@ -47,9 +48,11 @@ function archiveFlags(url, auth, flagId) {
   };
   return axios(config)
     .then(function (response) {
+      core.info(response);
       return response;
     })
     .catch(function (error) {
+      core.info(error);
       return error;
     });
 }
