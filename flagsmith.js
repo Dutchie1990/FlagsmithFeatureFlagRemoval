@@ -37,7 +37,7 @@ async function getArchivedFlags(url, auth) {
 
 async function archiveFlags(url, auth, flagId) {
   var config = {
-    method: "PATCH",
+    method: "PUT",
     url: `${url}${flagId}`,
     body: {
       is_archived: true,
