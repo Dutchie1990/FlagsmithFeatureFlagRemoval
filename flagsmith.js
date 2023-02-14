@@ -47,10 +47,10 @@ function archiveFlags(url, auth, flagId) {
   };
   return axios(config)
     .then(function (response) {
-      return response.data.results;
+      return response;
     })
     .catch(function (error) {
-      console.log(error);
+      return error;
     });
 }
 
