@@ -5,6 +5,7 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 var axios = __nccwpck_require__(1441);
+const core = __nccwpck_require__(2186);
 
 function getFlagsmithFlags(url, auth) {
   var config = {
@@ -40,7 +41,29 @@ function getArchivedFlags(url, auth) {
     });
 }
 
-module.exports = { getFlagsmithFlags, getArchivedFlags };
+function archiveFlags(url, auth, flagId) {
+  var config = {
+    method: "put",
+    url: `${url}/${flagId}`,
+    body: {
+      is_archived: true,
+    },
+    headers: {
+      Authorization: auth,
+    },
+  };
+  return axios(config)
+    .then(function (response) {
+      core.info(response);
+      return response;
+    })
+    .catch(function (error) {
+      core.info(error);
+      return error;
+    });
+}
+
+module.exports = { getFlagsmithFlags, getArchivedFlags, archiveFlags };
 
 
 /***/ }),
@@ -50,7 +73,7 @@ module.exports = { getFlagsmithFlags, getArchivedFlags };
 
 const { Octokit } = __nccwpck_require__(5375);
 
-function getGithubConfigFlags(auth, owner, repo, path) {
+function getGithubConfigFlags(auth, owner, repo, path, ref) {
   const flags = [];
 
   const client = new Octokit({
@@ -61,6 +84,7 @@ function getGithubConfigFlags(auth, owner, repo, path) {
       owner,
       repo,
       path,
+      ref,
       mediaType: {
         format: "raw",
       },
@@ -16953,6 +16977,7 @@ async function run() {
     const path = core.getInput("path");
     const githubAuth = core.getInput("access_token");
     const flagsmithProjectId = core.getInput("flagsmithprojectid");
+    const ref = "careshop-production";
 
     core.info(`values: ${flagsReadyToArchive}  ...`);
     core.info(`values: ${flagsmithUrl}  ...`);
@@ -16967,7 +16992,8 @@ async function run() {
       githubAuth,
       owner,
       repo,
-      path
+      path,
+      ref
     );
 
     core.info(`Flags defined in the Sales CRM: ${githubFlags}`);
@@ -16982,9 +17008,9 @@ async function run() {
         const element = flagsmithFlags[key];
         if (!githubFlags.includes(element.name)) {
           flagsReadyToArchive.push(element);
-          core.info(`flag ready to remove ${element.name}`);
+          core.info(`flag ready to archive ${element.name}`);
         } else {
-          core.info(`flag still exists ${element.name}`);
+          core.info(`flag still exists on both places ${element.name}`);
         }
       }
     }
@@ -16993,8 +17019,14 @@ async function run() {
 
     for (const key in flagsReadyToArchive) {
       if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
-        const element = flagsReadyToArchive[key];
-        core.info(`Flags ready to archive: ${element.name}`);
+        const flag = flagsReadyToArchive[key];
+        core.info(`Flags ready to archive: ${flag.name}`);
+        const response = await flagsmithAPI.archiveFlags(
+          flagsmithUrl,
+          flagsmithToken,
+          flag.id
+        );
+        core.info(response);
       }
     }
 
@@ -17002,6 +17034,7 @@ async function run() {
       flagsmithUrl,
       flagsmithToken
     );
+
     const flagsForDeletion = [];
     var date = new Date();
     date.setMonth(date.getMonth() - 2);
