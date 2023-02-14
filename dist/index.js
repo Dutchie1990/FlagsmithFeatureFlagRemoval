@@ -17024,7 +17024,7 @@ async function run() {
         const response = await flagsmithAPI.archiveFlags(
           flagsmithUrl,
           flagsmithToken,
-          flag.id
+          flag.feature
         );
         core.info(response);
       }
