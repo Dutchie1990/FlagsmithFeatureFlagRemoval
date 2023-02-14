@@ -34,4 +34,24 @@ function getArchivedFlags(url, auth) {
     });
 }
 
-module.exports = { getFlagsmithFlags, getArchivedFlags };
+function archiveFlags(url, auth, flagId) {
+  var config = {
+    method: "put",
+    url: `${url}/${flagId}`,
+    body: {
+      is_archived: true,
+    },
+    headers: {
+      Authorization: auth,
+    },
+  };
+  return axios(config)
+    .then(function (response) {
+      return response.data.results;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+module.exports = { getFlagsmithFlags, getArchivedFlags, archiveFlags };
