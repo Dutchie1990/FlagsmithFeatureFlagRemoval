@@ -19,14 +19,26 @@ jobs:
   # test action works running from the graph
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arrays:
+          [
+            {
+              "ref": "production-careshop",
+              "sourcepath": "apps/careshop/src/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "7064",
+            },
+          ]
     steps:
       - uses: actions/checkout@v3
       - uses: ./
         with:
           access_token: ${{ secrets.GITHUB }}
-          flagsmithUrl: ${{ vars.FLAGSMITHURL }}
-          flagsmithprojectid: ${{ vars.FLAGSMITHPROJECTID}}
           apitokenflagsmith: ${{ secrets.APITOKENFLAGSMITH }}
+
           owner: "AlphaFounders"
           repo: "sales-crm-frontend"
-          path: ${{ vars.FILEPATH }}
+
+          flagsmithprojectid: ${{ matrix.arrays.flagsmithProjectId }}
+          path: ${{ matrix.arrays.sourcepath }}
+          ref: ${{ matrix.arrays.ref }}

@@ -6,14 +6,22 @@ const flagsmithAPI = require("./flagsmith");
 async function run() {
   try {
     const flagsReadyToArchive = [];
-    const flagsmithUrl = core.getInput("flagsmithUrl");
+    const FLAGSMITHBASEURL = "https://api.flagsmith.com/api/v1";
+
+    // secrets
+    const githubAuth = core.getInput("access_token");
     const flagsmithToken = core.getInput("apitokenflagsmith");
+
+    // github context
     const owner = core.getInput("owner");
     const repo = core.getInput("repo");
-    const path = core.getInput("path");
-    const githubAuth = core.getInput("access_token");
+
+    // matrix
     const flagsmithProjectId = core.getInput("flagsmithprojectid");
-    const ref = "production-careshop";
+    const path = core.getInput("path");
+    const ref = core.getInput("ref");
+
+    const flagsmithUrl = `${FLAGSMITHBASEURL}/projects/${flagsmithProjectId}/features/`;
 
     core.info(`values: ${flagsReadyToArchive}  ...`);
     core.info(`values: ${flagsmithUrl}  ...`);
