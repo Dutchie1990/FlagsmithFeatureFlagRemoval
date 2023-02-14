@@ -5,7 +5,6 @@ const flagsmithAPI = require("./flagsmith");
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const flagsReadyToArchive = [];
     const FLAGSMITHBASEURL = "https://api.flagsmith.com/api/v1";
 
     // secrets
@@ -22,15 +21,10 @@ async function run() {
     const ref = core.getInput("ref");
 
     const flagsmithUrl = `${FLAGSMITHBASEURL}/projects/${flagsmithProjectId}/features/`;
-
-    core.info(`values: ${flagsReadyToArchive}  ...`);
-    core.info(`values: ${flagsmithUrl}  ...`);
-    core.info(`values: ${flagsmithToken}  ...`);
-    core.info(`values: ${owner}  ...`);
-    core.info(`values: ${repo}  ...`);
-    core.info(`values: ${path}  ...`);
-    core.info(`values: ${githubAuth}  ...`);
-    core.info(`values: ${flagsmithProjectId}  ...`);
+    var flagsReadyToArchive = [];
+    var archivedFlags = [];
+    var flagsReadyToDelete = [];
+    var deletedFlags = [];
 
     const githubFlags = await getGithubConfigFlags(
       githubAuth,
@@ -59,8 +53,6 @@ async function run() {
       }
     }
 
-    core.info(`Flags defined in flagssmith: ${flagsmithFlags}`);
-
     for (const key in flagsReadyToArchive) {
       if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
         const flag = flagsReadyToArchive[key];
@@ -70,39 +62,33 @@ async function run() {
           flagsmithToken,
           flag.id
         );
-        core.info(JSON.stringify(response));
+        archivedFlags.push(response.name);
       }
     }
 
-    const archivedFlags = await flagsmithAPI.getArchivedFlags(
+    flagsReadyToDelete = await flagsmithAPI.getArchivedFlags(
       flagsmithUrl,
       flagsmithToken
     );
 
-    const flagsForDeletion = [];
     var date = new Date();
     date.setMonth(date.getMonth() - 2);
 
-    for (const key in archivedFlags) {
-      if (Object.hasOwnProperty.call(archivedFlags, key)) {
-        const flag = archivedFlags[key];
+    for (const key in flagsReadyToDelete) {
+      if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
+        const flag = flagsReadyToDelete[key];
         if (flag.created_date > date.toISOString()) {
           const response = await flagsmithAPI.deleteFlag(
             flagsmithUrl,
             flagsmithToken,
             flag.id
           );
-          core.info(JSON.stringify(response));
+          deletedFlags.push(response.name);
         }
       }
     }
-
-    for (const key in flagsForDeletion) {
-      if (Object.hasOwnProperty.call(flagsForDeletion, key)) {
-        const element = flagsForDeletion[key];
-        core.info(`Flags ready to delete: ${element.name}`);
-      }
-    }
+    core.info(`${archivedFlags.count()} are archived`);
+    core.info(`${deletedFlags.count()} are deleted`);
 
     core.info("Done");
   } catch (error) {
