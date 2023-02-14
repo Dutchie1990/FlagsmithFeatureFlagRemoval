@@ -3,7 +3,7 @@ const core = require("@actions/core");
 
 async function getFlagsmithFlags(url, auth) {
   var config = {
-    method: "get",
+    method: "GET",
     url: `${url}?sort_field=name&is_archived=false`,
     headers: {
       Authorization: auth,
@@ -20,7 +20,7 @@ async function getFlagsmithFlags(url, auth) {
 
 async function getArchivedFlags(url, auth) {
   var config = {
-    method: "get",
+    method: "GET",
     url: `${url}?is_archived=true`,
     headers: {
       Authorization: auth,
@@ -37,7 +37,7 @@ async function getArchivedFlags(url, auth) {
 
 async function archiveFlags(url, auth, flagId) {
   var config = {
-    method: "patch",
+    method: "PATCH",
     url: `${url}${flagId}`,
     body: {
       is_archived: true,
