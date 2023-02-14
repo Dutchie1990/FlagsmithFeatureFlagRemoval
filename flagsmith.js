@@ -36,12 +36,13 @@ async function getArchivedFlags(url, auth) {
 }
 
 async function archiveFlags(url, auth, flagId) {
+  var data = JSON.stringify({
+    is_archived: true,
+  });
   var config = {
     method: "PATCH",
     url: `${url}${flagId}/`,
-    body: {
-      is_archived: true,
-    },
+    data: data,
     headers: {
       Authorization: auth,
       "Content-Type": "application/json",
