@@ -44,7 +44,7 @@ function getArchivedFlags(url, auth) {
 function archiveFlags(url, auth, flagId) {
   var config = {
     method: "patch",
-    url: `${url}/${flagId}`,
+    url: `${url}${flagId}`,
     body: {
       is_archived: true,
     },
