@@ -25,6 +25,9 @@ inputs:
   path:
     description: "Path to the file in the repo to run the diff"
     required: true
+  ref:
+    description: "The specific branch where the config file lives"
+    required: true
 branding:
   icon: "message-circle"
   color: "white"
