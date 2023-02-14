@@ -38,12 +38,13 @@ async function getArchivedFlags(url, auth) {
 async function archiveFlags(url, auth, flagId) {
   var config = {
     method: "PUT",
-    url: `${url}${flagId}`,
+    url: `${url}${flagId}/`,
     body: {
       is_archived: true,
     },
     headers: {
       Authorization: auth,
+      "Content-Type": "application/json",
     },
   };
   core.info(config.url);
