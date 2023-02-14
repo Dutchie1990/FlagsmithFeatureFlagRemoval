@@ -63,7 +63,7 @@ async function run() {
           flagsmithToken,
           flag.id
         );
-        core.info(response);
+        core.info(JSON.parse(response));
       }
     }
 
