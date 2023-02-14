@@ -16977,7 +16977,7 @@ async function run() {
     const path = core.getInput("path");
     const githubAuth = core.getInput("access_token");
     const flagsmithProjectId = core.getInput("flagsmithprojectid");
-    const ref = "origin/careshop-production";
+    const ref = "production-careshop";
 
     core.info(`values: ${flagsReadyToArchive}  ...`);
     core.info(`values: ${flagsmithUrl}  ...`);
