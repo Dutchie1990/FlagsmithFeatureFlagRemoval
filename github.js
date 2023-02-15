@@ -7,7 +7,7 @@ async function getGithubConfigFlags(auth, ownerRepo, path, ref) {
     auth,
   });
   return client
-    .request("GET /repos/{ownerRepo/contents/{path}", {
+    .request("GET /repos/{ownerRepo}/contents/{path}", {
       ownerRepo,
       path,
       ref,
