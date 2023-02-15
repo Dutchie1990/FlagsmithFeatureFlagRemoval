@@ -1,5 +1,5 @@
-name: "Git diff notification messages on Slack linked to JIRA tickets"
-description: "Post a message to Slack with Incoming Webhook"
+name: "Flagsmith Feature Flag Remover"
+description: "Remove unused flags based on config file in repository"
 inputs:
   access_token:
     description: "Access token to get github file action, github token"
