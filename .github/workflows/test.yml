@@ -15,9 +15,9 @@ jobs:
         arrays:
           [
             {
-              "ref": "production-careshop",
-              "sourcepath": "apps/careshop/src/config/flagsmithConfig.ts",
-              "flagsmithProjectId": "7064",
+              "ref": "testing",
+              "sourcepath": "testing",
+              "flagsmithProjectId": "testing",
             },
           ]
     steps:
@@ -27,8 +27,8 @@ jobs:
           access_token: ${{ secrets.GITHUB }}
           apitokenflagsmith: ${{ secrets.APITOKENFLAGSMITH }}
 
-          owner: "AlphaFounders"
-          repo: "sales-crm-frontend"
+          owner: "testing"
+          repo: "testing"
 
           flagsmithprojectid: ${{ matrix.arrays.flagsmithProjectId }}
           path: ${{ matrix.arrays.sourcepath }}
