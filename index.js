@@ -73,7 +73,7 @@ async function run() {
     }
 
     var date = new Date();
-    date.setMonth(date.getMonth() - 2);
+    date.setMonth(date.getDay() - 7);
 
     for (const key in flagsReadyToDelete) {
       if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
