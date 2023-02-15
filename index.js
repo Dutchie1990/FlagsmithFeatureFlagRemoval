@@ -13,8 +13,7 @@ async function run() {
     const flagsmithToken = core.getInput("apitokenflagsmith");
 
     // github context
-    const owner = core.getInput("owner");
-    const repo = core.getInput("repo");
+    const ownerRepo = core.getInput("ownerrepo");
 
     // matrix
     const flagsmithProjectId = core.getInput("flagsmithprojectid");
@@ -31,8 +30,7 @@ async function run() {
 
     const githubFlags = await getGithubConfigFlags(
       githubAuth,
-      owner,
-      repo,
+      ownerRepo,
       path,
       ref
     );

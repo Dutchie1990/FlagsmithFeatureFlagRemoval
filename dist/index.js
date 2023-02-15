@@ -94,16 +94,15 @@ module.exports = {
 
 const { Octokit } = __nccwpck_require__(5375);
 
-async function getGithubConfigFlags(auth, owner, repo, path, ref) {
+async function getGithubConfigFlags(auth, ownerRepo, path, ref) {
   const flags = [];
 
   const client = new Octokit({
     auth,
   });
   return client
-    .request("GET /repos/{owner}/{repo}/contents/{path}", {
-      owner,
-      repo,
+    .request("GET /repos/{ownerRepo/contents/{path}", {
+      ownerRepo,
       path,
       ref,
       mediaType: {
@@ -17083,8 +17082,7 @@ async function run() {
     const flagsmithToken = core.getInput("apitokenflagsmith");
 
     // github context
-    const owner = core.getInput("owner");
-    const repo = core.getInput("repo");
+    const ownerRepo = core.getInput("ownerrepo");
 
     // matrix
     const flagsmithProjectId = core.getInput("flagsmithprojectid");
@@ -17101,8 +17099,7 @@ async function run() {
 
     const githubFlags = await getGithubConfigFlags(
       githubAuth,
-      owner,
-      repo,
+      ownerRepo,
       path,
       ref
     );

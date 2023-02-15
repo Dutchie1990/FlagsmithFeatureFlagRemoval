@@ -5,23 +5,16 @@ inputs:
     description: "Access token to get github file action, github token"
     required: true
     default: "${{ github.TOKEN }}"
-  flagsmithUrl:
-    description: "Flagsmith  url to get the current flags which are defined in Flagsmith"
-    required: true
   apitokenflagsmith:
     description: "API token to call the Flagsmith API"
     required: true
   flagsmithprojectid:
     description: "Project id from the Flagsmith repository"
     required: true
-  owner:
+  ownerrepo:
     description: "Github organization name"
     required: true
-    default: "${{ github.GITHUB_REPOSITORY_OWNER }}"
-  repo:
-    description: "The repository for which we run the featureflag removal"
-    required: true
-    default: "{{ github.GITHUB_REPOSITORY }}"
+    default: "${{ github.GITHUB_REPOSITORY }}"
   path:
     description: "Path to the file in the repo to run the diff"
     required: true

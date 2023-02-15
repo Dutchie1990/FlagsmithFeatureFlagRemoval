@@ -1,15 +1,14 @@
 const { Octokit } = require("@octokit/rest");
 
-async function getGithubConfigFlags(auth, owner, repo, path, ref) {
+async function getGithubConfigFlags(auth, ownerRepo, path, ref) {
   const flags = [];
 
   const client = new Octokit({
     auth,
   });
   return client
-    .request("GET /repos/{owner}/{repo}/contents/{path}", {
-      owner,
-      repo,
+    .request("GET /repos/{ownerRepo/contents/{path}", {
+      ownerRepo,
       path,
       ref,
       mediaType: {
