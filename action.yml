@@ -28,6 +28,12 @@ inputs:
   ref:
     description: "The specific branch where the config file lives"
     required: true
+  sendmessage:
+    description: "Activate when you want to sent a message to slack"
+    required: false
+  slackwebhook:
+    description: "Provide the slack webhook key"
+    required: false
 branding:
   icon: "message-circle"
   color: "white"

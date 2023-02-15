@@ -1,6 +1,7 @@
 const core = require("@actions/core");
 const getGithubConfigFlags = require("./github");
 const flagsmithAPI = require("./flagsmith");
+const slackAPI = require("./slack");
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -19,6 +20,8 @@ async function run() {
     const flagsmithProjectId = core.getInput("flagsmithprojectid");
     const path = core.getInput("path");
     const ref = core.getInput("ref");
+    const sendMessage = core.getInput("sendmessage");
+    const slackWebhook = core.getInput("slackwebhook");
 
     const flagsmithUrl = `${FLAGSMITHBASEURL}/projects/${flagsmithProjectId}/features/`;
     var flagsReadyToArchive = [];
@@ -75,21 +78,22 @@ async function run() {
     for (const key in flagsReadyToDelete) {
       if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
         const flag = flagsReadyToDelete[key];
-        if (flag.created_date > date.toISOString()) {
-          const response = await flagsmithAPI.deleteFlag(
+        if (flag.created_date < date.toISOString()) {
+          const res = await flagsmithAPI.deleteFlag(
             flagsmithUrl,
             flagsmithToken,
             flag.id
           );
-          deletedFlags.push(response.name);
+          core.info(res);
+          deletedFlags.push(flag.name);
         }
       }
     }
-    core.info(`${archivedFlags.length} are archived`);
-    core.info(`${deletedFlags.length} are deleted`);
 
-    core.info(JSON.stringify(archivedFlags));
-    core.info(JSON.stringify(deletedFlags));
+    if (sendMessage) {
+      const message = slackAPI.createMessage(deletedFlags, archivedFlags, ref);
+      await slackAPI.sendMessage(message, slackWebhook);
+    }
 
     core.info("Done");
   } catch (error) {

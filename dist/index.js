@@ -12821,6 +12821,91 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 9101:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const axios = __nccwpck_require__(1441);
+const divider = {
+  type: "divider",
+};
+
+function createMessage(deletedFlags, archivedFlags, ref) {
+  const project = ref.split("-")[1];
+  var message = {};
+  var blocks = [];
+
+  const deleteHeader = {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: `:put_litter_in_its_place: ${deletedFlags.length} Flags has been removed from the ${project}`,
+      emoji: true,
+    },
+  };
+
+  blocks.push(deleteHeader);
+  blocks.push(divider);
+
+  for (let index = 0; index < deletedFlags.length; index++) {
+    const flagName = deletedFlags[index];
+    const teamName = deletedFlags[index].split("-")[0];
+
+    var deleteMessage = {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `*${teamName.toUpperCase()}* - ${flagName}`,
+      },
+    };
+    blocks.push(deleteMessage);
+  }
+
+  const archiveHeader = {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: `:file_folder: ${archivedFlags.length} Flags has been archived in the ${project}`,
+      emoji: true,
+    },
+  };
+
+  blocks.push(archiveHeader);
+  blocks.push(divider);
+
+  for (let index = 0; index < archivedFlags.length; index++) {
+    const flagName = archivedFlags[index];
+    const teamName = archivedFlags[index].split("-")[0];
+
+    var archiveMessage = {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `*${teamName.toUpperCase()}* - ${flagName}`,
+      },
+    };
+    blocks.push(archiveMessage);
+  }
+  message.blocks = blocks;
+  return message;
+}
+
+async function sendMessage(message, to) {
+  const headers = { "Content-Type": "application/json; charset=utf-8" };
+  return axios
+    .post(to, JSON.stringify(message), { headers: headers })
+    .then((res) => {
+      console.log(res.status);
+    })
+    .catch((res) => {
+      throw new Error(`Request failed with status ${res.status}`);
+    });
+}
+
+module.exports = { createMessage, sendMessage };
+
+
+/***/ }),
+
 /***/ 2877:
 /***/ ((module) => {
 
@@ -16986,6 +17071,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(2186);
 const getGithubConfigFlags = __nccwpck_require__(6535);
 const flagsmithAPI = __nccwpck_require__(285);
+const slackAPI = __nccwpck_require__(9101);
 
 // most @actions toolkit packages have async methods
 async function run() {
@@ -17004,6 +17090,8 @@ async function run() {
     const flagsmithProjectId = core.getInput("flagsmithprojectid");
     const path = core.getInput("path");
     const ref = core.getInput("ref");
+    const sendMessage = core.getInput("sendmessage");
+    const slackWebhook = core.getInput("slackwebhook");
 
     const flagsmithUrl = `${FLAGSMITHBASEURL}/projects/${flagsmithProjectId}/features/`;
     var flagsReadyToArchive = [];
@@ -17060,21 +17148,22 @@ async function run() {
     for (const key in flagsReadyToDelete) {
       if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
         const flag = flagsReadyToDelete[key];
-        if (flag.created_date > date.toISOString()) {
-          const response = await flagsmithAPI.deleteFlag(
+        if (flag.created_date < date.toISOString()) {
+          const res = await flagsmithAPI.deleteFlag(
             flagsmithUrl,
             flagsmithToken,
             flag.id
           );
-          deletedFlags.push(response.name);
+          core.info(res);
+          deletedFlags.push(flag.name);
         }
       }
     }
-    core.info(`${archivedFlags.length} are archived`);
-    core.info(`${deletedFlags.length} are deleted`);
 
-    core.info(JSON.stringify(archivedFlags));
-    core.info(JSON.stringify(deletedFlags));
+    if (sendMessage) {
+      const message = slackAPI.createMessage(deletedFlags, archivedFlags, ref);
+      await slackAPI.sendMessage(message, slackWebhook);
+    }
 
     core.info("Done");
   } catch (error) {
