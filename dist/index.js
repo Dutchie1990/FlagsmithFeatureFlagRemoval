@@ -96,13 +96,16 @@ const { Octokit } = __nccwpck_require__(5375);
 
 async function getGithubConfigFlags(auth, ownerRepo, path, ref) {
   const flags = [];
+  const owner = ownerRepo.split("/")[0];
+  const repo = ownerRepo.split("/")[1];
 
   const client = new Octokit({
     auth,
   });
   return client
-    .request("GET /repos/{ownerRepo}/contents/{path}", {
-      ownerRepo,
+    .request("GET /repos/{owner}/{repo}/contents/{path}", {
+      owner,
+      repo,
       path,
       ref,
       mediaType: {
@@ -110,6 +113,7 @@ async function getGithubConfigFlags(auth, ownerRepo, path, ref) {
       },
     })
     .then((response) => {
+      console.log(response);
       const extractedValues = response.data.split(",");
       extractedValues.forEach((el) => {
         var mySubString = el.substring(
@@ -119,10 +123,11 @@ async function getGithubConfigFlags(auth, ownerRepo, path, ref) {
         flags.push(mySubString);
       });
       flags.pop();
+      console.log(flags);
       return flags;
     })
     .catch((er) => {
-      console.log(er);
+      console.log(er.request);
     });
 }
 
