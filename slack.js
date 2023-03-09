@@ -8,7 +8,7 @@ function createMessage(deletedFlags, archivedFlags, ref, dryRun) {
   var message = {};
   var blocks = [];
 
-  if (deletedFlags) {
+  if (deletedFlags.length > 0) {
     let deleteHeaderText =
       dryRun === false
         ? `:put_litter_in_its_place: ${deletedFlags.length} Flags has been removed from the ${project}`
@@ -41,7 +41,7 @@ function createMessage(deletedFlags, archivedFlags, ref, dryRun) {
     }
   }
 
-  if (archivedFlags) {
+  if (archivedFlags.length > 0) {
     let archiveHeaderText =
       dryRun === false
         ? `:file_folder: ${archivedFlags.length} Flags has been archived in the ${project}`
