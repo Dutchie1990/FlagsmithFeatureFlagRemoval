@@ -20,7 +20,7 @@ async function run() {
     const path = core.getInput("path");
     const ref = core.getInput("ref");
     const sendMessage = core.getInput("sendmessage");
-    const slackWebhook = core.get("slackwebhook");
+    const slackWebhook = core.getInput("slackwebhook");
 
     // config
     const dryRun = core.getBooleanInput("dryrun");
