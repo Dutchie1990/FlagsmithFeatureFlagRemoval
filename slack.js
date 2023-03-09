@@ -3,16 +3,21 @@ const divider = {
   type: "divider",
 };
 
-function createMessage(deletedFlags, archivedFlags, ref) {
+function createMessage(deletedFlags, archivedFlags, ref, dryRun) {
   const project = ref.split("-")[1];
   var message = {};
   var blocks = [];
+
+  let deleteHeaderText =
+    dryRun === false
+      ? `:put_litter_in_its_place: ${deletedFlags.length} Flags has been removed from the ${project}`
+      : `:put_litter_in_its_place: ${deletedFlags.length} Flags ready to be removed from the ${project}`;
 
   const deleteHeader = {
     type: "header",
     text: {
       type: "plain_text",
-      text: `:put_litter_in_its_place: ${deletedFlags.length} Flags has been removed from the ${project}`,
+      text: deleteHeaderText,
       emoji: true,
     },
   };
@@ -34,11 +39,16 @@ function createMessage(deletedFlags, archivedFlags, ref) {
     blocks.push(deleteMessage);
   }
 
+  let archiveHeaderText =
+    dryRun === false
+      ? `:file_folder: ${archivedFlags.length} Flags has been archived in the ${project}`
+      : `:file_folder: ${archivedFlags.length} Flags ready to be archived in the ${project}`;
+
   const archiveHeader = {
     type: "header",
     text: {
       type: "plain_text",
-      text: `:file_folder: ${archivedFlags.length} Flags has been archived in the ${project}`,
+      text: archiveHeaderText,
       emoji: true,
     },
   };

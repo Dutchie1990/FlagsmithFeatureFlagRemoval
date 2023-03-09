@@ -27,6 +27,9 @@ inputs:
   slackwebhook:
     description: "Provide the slack webhook key"
     required: false
+  dryrun:
+    description: "When having dry run = true, only message will be sent be nothing will be removed"
+    required: true
 branding:
   icon: "message-circle"
   color: "white"

@@ -20,7 +20,10 @@ async function run() {
     const path = core.getInput("path");
     const ref = core.getInput("ref");
     const sendMessage = core.getInput("sendmessage");
-    const slackWebhook = core.getInput("slackwebhook");
+    const slackWebhook = core.get("slackwebhook");
+
+    // config
+    const dryRun = core.getBooleanInput("dryrun");
 
     const flagsmithUrl = `${FLAGSMITHBASEURL}/projects/${flagsmithProjectId}/features/`;
     var flagsReadyToArchive = [];
@@ -57,39 +60,57 @@ async function run() {
       }
     }
 
-    for (const key in flagsReadyToArchive) {
-      if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
-        const flag = flagsReadyToArchive[key];
-        core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
-        const response = await flagsmithAPI.archiveFlag(
-          flagsmithUrl,
-          flagsmithToken,
-          flag.id
-        );
-        archivedFlags.push(response.name);
-      }
-    }
-
-    var date = new Date();
-    date.setMonth(date.getDay() - 7);
-
-    for (const key in flagsReadyToDelete) {
-      if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
-        const flag = flagsReadyToDelete[key];
-        if (flag.created_date < date.toISOString()) {
-          const res = await flagsmithAPI.deleteFlag(
+    if (dryRun === false) {
+      for (const key in flagsReadyToArchive) {
+        if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
+          const flag = flagsReadyToArchive[key];
+          core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
+          const response = await flagsmithAPI.archiveFlag(
             flagsmithUrl,
             flagsmithToken,
             flag.id
           );
-          core.info(res);
-          deletedFlags.push(flag.name);
+          archivedFlags.push(response.name);
+        }
+      }
+
+      var date = new Date();
+      date.setMonth(date.getDay() - 7);
+
+      for (const key in flagsReadyToDelete) {
+        if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
+          const flag = flagsReadyToDelete[key];
+          if (flag.created_date < date.toISOString()) {
+            const res = await flagsmithAPI.deleteFlag(
+              flagsmithUrl,
+              flagsmithToken,
+              flag.id
+            );
+            core.info(res);
+            deletedFlags.push(flag.name);
+          }
         }
       }
     }
 
     if (sendMessage) {
-      const message = slackAPI.createMessage(deletedFlags, archivedFlags, ref);
+      let message = "";
+      if (dryRun === true) {
+        message = slackAPI.createMessage(
+          flagsReadyToArchive,
+          flagsReadyToDelete,
+          ref,
+          dryRun
+        );
+      } else {
+        message = slackAPI.createMessage(
+          deletedFlags,
+          archivedFlags,
+          ref,
+          dryRun
+        );
+      }
+
       await slackAPI.sendMessage(message, slackWebhook);
     }
 
