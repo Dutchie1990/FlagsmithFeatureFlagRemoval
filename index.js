@@ -97,8 +97,8 @@ async function run() {
       let message = "";
       if (dryRun === true) {
         message = slackAPI.createMessage(
-          flagsReadyToArchive,
           flagsReadyToDelete,
+          flagsReadyToArchive,
           ref,
           dryRun
         );
