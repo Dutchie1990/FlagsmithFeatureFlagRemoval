@@ -60,56 +60,48 @@ async function run() {
       }
     }
 
-    if (dryRun === false) {
-      for (const key in flagsReadyToArchive) {
-        if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
-          const flag = flagsReadyToArchive[key];
-          core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
+    for (const key in flagsReadyToArchive) {
+      if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
+        const flag = flagsReadyToArchive[key];
+        core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
+        if (dryRun === false) {
           const response = await flagsmithAPI.archiveFlag(
             flagsmithUrl,
             flagsmithToken,
             flag.id
           );
-          archivedFlags.push(response.name);
+          core.info(response);
         }
+        archivedFlags.push(flag.name);
       }
+    }
 
-      var date = new Date();
-      date.setMonth(date.getDay() - 7);
+    var date = new Date();
+    date.setMonth(date.getDay() - 7);
 
-      for (const key in flagsReadyToDelete) {
-        if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
-          const flag = flagsReadyToDelete[key];
-          if (flag.created_date < date.toISOString()) {
-            const res = await flagsmithAPI.deleteFlag(
-              flagsmithUrl,
-              flagsmithToken,
-              flag.id
-            );
-            core.info(res);
-            deletedFlags.push(flag.name);
-          }
+    for (const key in flagsReadyToDelete) {
+      if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
+        const flag = flagsReadyToDelete[key];
+        if (flag.created_date < date.toISOString() && dryRun === false) {
+          const res = await flagsmithAPI.deleteFlag(
+            flagsmithUrl,
+            flagsmithToken,
+            flag.id
+          );
+          core.info(res);
         }
+        deletedFlags.push(flag.name);
       }
     }
 
     if (sendMessage) {
       let message = "";
-      if (dryRun === true) {
-        message = slackAPI.createMessage(
-          flagsReadyToDelete,
-          flagsReadyToArchive,
-          ref,
-          dryRun
-        );
-      } else {
-        message = slackAPI.createMessage(
-          deletedFlags,
-          archivedFlags,
-          ref,
-          dryRun
-        );
-      }
+      message = slackAPI.createMessage(
+        deletedFlags,
+        archivedFlags,
+        ref,
+        dryRun
+      );
 
       if (message != "") {
         await slackAPI.sendMessage(message, slackWebhook);
