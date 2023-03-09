@@ -111,7 +111,9 @@ async function run() {
         );
       }
 
-      await slackAPI.sendMessage(message, slackWebhook);
+      if (message != "") {
+        await slackAPI.sendMessage(message, slackWebhook);
+      }
     }
 
     core.info("Done");
