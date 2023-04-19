@@ -17394,11 +17394,13 @@ async function run() {
 
     console.log(flagsReadyToDelete);
 
-    if (flagsmithFlags) {
+    if (typeof flagsmithFlags === "undefined") {
       for (const key in flagsmithFlags) {
         if (Object.hasOwnProperty.call(flagsmithFlags, key)) {
           const element = flagsmithFlags[key];
-          if (!githubFlags.includes(element.name)) {
+          if (typeof flagsmithFlags === "undefined") {
+            flagsReadyToArchive.push(element);
+          } else if (!githubFlags.includes(element.name)) {
             flagsReadyToArchive.push(element);
             core.info(`flag ready to archive ${element.name}`);
           } else {
@@ -17408,21 +17410,19 @@ async function run() {
       }
     }
 
-    if (flagsReadyToArchive) {
-      for (const key in flagsReadyToArchive) {
-        if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
-          const flag = flagsReadyToArchive[key];
-          core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
-          if (dryRun === false) {
-            const response = await flagsmithAPI.archiveFlag(
-              flagsmithUrl,
-              flagsmithToken,
-              flag.id
-            );
-            core.info(response);
-          }
-          archivedFlags.push(flag.name);
+    for (const key in flagsReadyToArchive) {
+      if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
+        const flag = flagsReadyToArchive[key];
+        core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
+        if (dryRun === false) {
+          const response = await flagsmithAPI.archiveFlag(
+            flagsmithUrl,
+            flagsmithToken,
+            flag.id
+          );
+          core.info(response);
         }
+        archivedFlags.push(flag.name);
       }
     }
 
