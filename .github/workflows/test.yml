@@ -27,8 +27,7 @@ jobs:
           access_token: ${{ secrets.GITHUB }}
           apitokenflagsmith: ${{ secrets.APITOKENFLAGSMITH }}
 
-          owner: "testing"
-          repo: "testing"
+          ownerrepo: $${{ secrets.OWNER }}
 
           flagsmithprojectid: ${{ matrix.arrays.flagsmithProjectId }}
           path: ${{ matrix.arrays.sourcepath }}
