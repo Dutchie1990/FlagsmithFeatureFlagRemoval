@@ -19,7 +19,6 @@ async function getGithubConfigFlags(auth, ownerRepo, path, ref) {
       },
     })
     .then((response) => {
-      console.log(response);
       const extractedValues = response.data.split(",");
       extractedValues.forEach((el) => {
         var mySubString = el.substring(
@@ -29,7 +28,6 @@ async function getGithubConfigFlags(auth, ownerRepo, path, ref) {
         flags.push(mySubString);
       });
       flags.pop();
-      console.log(flags);
       return flags;
     })
     .catch((er) => {

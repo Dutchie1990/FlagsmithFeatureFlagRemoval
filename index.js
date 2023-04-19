@@ -38,21 +38,15 @@ async function run() {
       ref
     );
 
-    console.log(githubFlags);
-
     const flagsmithFlags = await flagsmithAPI.getFlagsmithFlags(
       flagsmithUrl,
       flagsmithToken
     );
 
-    console.log(flagsmithFlags);
-
     flagsReadyToDelete = await flagsmithAPI.getArchivedFlags(
       flagsmithUrl,
       flagsmithToken
     );
-
-    console.log(flagsReadyToDelete);
 
     if (typeof flagsmithFlags === "undefined") {
       for (const key in flagsmithFlags) {
@@ -62,10 +56,8 @@ async function run() {
             flagsReadyToArchive.push(element);
           } else if (!githubFlags.includes(element.name)) {
             flagsReadyToArchive.push(element);
-            console.log(`flag ready to archive ${element.name}`);
             core.info(`flag ready to archive ${element.name}`);
           } else {
-            console.log(`flag still exists on both places ${element.name}`);
             core.info(`flag still exists on both places ${element.name}`);
           }
         }
@@ -75,7 +67,6 @@ async function run() {
     for (const key in flagsReadyToArchive) {
       if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
         const flag = flagsReadyToArchive[key];
-        console.log(`Flags ready to archive: ${flag.name} - ${flag.id}`);
         core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
         if (dryRun === false) {
           const response = await flagsmithAPI.archiveFlag(
@@ -111,8 +102,6 @@ async function run() {
 
     if (sendMessage) {
       let message = "";
-      console.log(`deletedFlags = ${deletedFlags}`);
-      console.log(`deletedFlags = ${archivedFlags}`);
       message = slackAPI.createMessage(
         deletedFlags,
         archivedFlags,
