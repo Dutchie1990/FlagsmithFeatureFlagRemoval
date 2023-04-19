@@ -48,11 +48,11 @@ async function run() {
       flagsmithToken
     );
 
-    if (typeof flagsmithFlags === "undefined") {
+    if (typeof flagsmithFlags !== "undefined") {
       for (const key in flagsmithFlags) {
         if (Object.hasOwnProperty.call(flagsmithFlags, key)) {
           const element = flagsmithFlags[key];
-          if (typeof githubFlags === "undefined") {
+          if (typeof githubFlags !== "undefined") {
             flagsReadyToArchive.push(element);
           } else if (!githubFlags.includes(element.name)) {
             flagsReadyToArchive.push(element);

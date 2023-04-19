@@ -5,7 +5,7 @@ async function getFlagsmithFlags(url, auth) {
     method: "GET",
     url: `${url}?sort_field=name&is_archived=false`,
     headers: {
-      Authorization: auth,
+      Authorization: `token ${auth}`,
     },
   };
   return axios(config)
@@ -22,7 +22,7 @@ async function getArchivedFlags(url, auth) {
     method: "GET",
     url: `${url}?is_archived=true`,
     headers: {
-      Authorization: auth,
+      Authorization: `token ${auth}`,
     },
   };
   return axios(config)

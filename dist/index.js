@@ -11,7 +11,7 @@ async function getFlagsmithFlags(url, auth) {
     method: "GET",
     url: `${url}?sort_field=name&is_archived=false`,
     headers: {
-      Authorization: auth,
+      Authorization: `token ${auth}`,
     },
   };
   return axios(config)
@@ -28,7 +28,7 @@ async function getArchivedFlags(url, auth) {
     method: "GET",
     url: `${url}?is_archived=true`,
     headers: {
-      Authorization: auth,
+      Authorization: `token ${auth}`,
     },
   };
   return axios(config)
@@ -17386,11 +17386,11 @@ async function run() {
       flagsmithToken
     );
 
-    if (typeof flagsmithFlags === "undefined") {
+    if (typeof flagsmithFlags !== "undefined") {
       for (const key in flagsmithFlags) {
         if (Object.hasOwnProperty.call(flagsmithFlags, key)) {
           const element = flagsmithFlags[key];
-          if (typeof githubFlags === "undefined") {
+          if (typeof githubFlags !== "undefined") {
             flagsReadyToArchive.push(element);
           } else if (!githubFlags.includes(element.name)) {
             flagsReadyToArchive.push(element);
