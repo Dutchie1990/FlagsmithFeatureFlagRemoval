@@ -54,49 +54,55 @@ async function run() {
 
     console.log(flagsReadyToDelete);
 
-    for (const key in flagsmithFlags) {
-      if (Object.hasOwnProperty.call(flagsmithFlags, key)) {
-        const element = flagsmithFlags[key];
-        if (!githubFlags.includes(element.name)) {
-          flagsReadyToArchive.push(element);
-          core.info(`flag ready to archive ${element.name}`);
-        } else {
-          core.info(`flag still exists on both places ${element.name}`);
+    if (flagsmithFlags) {
+      for (const key in flagsmithFlags) {
+        if (Object.hasOwnProperty.call(flagsmithFlags, key)) {
+          const element = flagsmithFlags[key];
+          if (!githubFlags.includes(element.name)) {
+            flagsReadyToArchive.push(element);
+            core.info(`flag ready to archive ${element.name}`);
+          } else {
+            core.info(`flag still exists on both places ${element.name}`);
+          }
         }
       }
     }
 
-    for (const key in flagsReadyToArchive) {
-      if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
-        const flag = flagsReadyToArchive[key];
-        core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
-        if (dryRun === false) {
-          const response = await flagsmithAPI.archiveFlag(
-            flagsmithUrl,
-            flagsmithToken,
-            flag.id
-          );
-          core.info(response);
+    if (flagsReadyToArchive) {
+      for (const key in flagsReadyToArchive) {
+        if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
+          const flag = flagsReadyToArchive[key];
+          core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
+          if (dryRun === false) {
+            const response = await flagsmithAPI.archiveFlag(
+              flagsmithUrl,
+              flagsmithToken,
+              flag.id
+            );
+            core.info(response);
+          }
+          archivedFlags.push(flag.name);
         }
-        archivedFlags.push(flag.name);
       }
     }
 
     var date = new Date();
     date.setMonth(date.getDay() - 7);
 
-    for (const key in flagsReadyToDelete) {
-      if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
-        const flag = flagsReadyToDelete[key];
-        if (flag.created_date < date.toISOString() && dryRun === false) {
-          const res = await flagsmithAPI.deleteFlag(
-            flagsmithUrl,
-            flagsmithToken,
-            flag.id
-          );
-          core.info(res);
+    if (flagsReadyToDelete) {
+      for (const key in flagsReadyToDelete) {
+        if (Object.hasOwnProperty.call(flagsReadyToDelete, key)) {
+          const flag = flagsReadyToDelete[key];
+          if (flag.created_date < date.toISOString() && dryRun === false) {
+            const res = await flagsmithAPI.deleteFlag(
+              flagsmithUrl,
+              flagsmithToken,
+              flag.id
+            );
+            core.info(res);
+          }
+          deletedFlags.push(flag.name);
         }
-        deletedFlags.push(flag.name);
       }
     }
 
