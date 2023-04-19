@@ -15,9 +15,9 @@ jobs:
         arrays:
           [
             {
-              "ref": "testing",
-              "sourcepath": "testing",
-              "flagsmithProjectId": "testing",
+              "ref": "production-careshop",
+              "sourcepath": "apps/careshop/src/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "7064",
             },
           ]
     steps:
