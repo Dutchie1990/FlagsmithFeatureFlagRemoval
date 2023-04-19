@@ -35,3 +35,4 @@ jobs:
           ref: ${{ matrix.arrays.ref }}
           sendmessage: true
           slackwebhook: ${{ secrets.INCOMING_WEBHOOK_URL }}
+          dryrun: true
