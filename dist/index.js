@@ -17398,12 +17398,14 @@ async function run() {
       for (const key in flagsmithFlags) {
         if (Object.hasOwnProperty.call(flagsmithFlags, key)) {
           const element = flagsmithFlags[key];
-          if (typeof flagsmithFlags === "undefined") {
+          if (typeof githubFlags === "undefined") {
             flagsReadyToArchive.push(element);
           } else if (!githubFlags.includes(element.name)) {
             flagsReadyToArchive.push(element);
+            console.log(`flag ready to archive ${element.name}`);
             core.info(`flag ready to archive ${element.name}`);
           } else {
+            console.log(`flag still exists on both places ${element.name}`);
             core.info(`flag still exists on both places ${element.name}`);
           }
         }
@@ -17413,6 +17415,7 @@ async function run() {
     for (const key in flagsReadyToArchive) {
       if (Object.hasOwnProperty.call(flagsReadyToArchive, key)) {
         const flag = flagsReadyToArchive[key];
+        console.log(`Flags ready to archive: ${flag.name} - ${flag.id}`);
         core.info(`Flags ready to archive: ${flag.name} - ${flag.id}`);
         if (dryRun === false) {
           const response = await flagsmithAPI.archiveFlag(
@@ -17448,6 +17451,8 @@ async function run() {
 
     if (sendMessage) {
       let message = "";
+      console.log(`deletedFlags = ${deletedFlags}`);
+      console.log(`deletedFlags = ${archivedFlags}`);
       message = slackAPI.createMessage(
         deletedFlags,
         archivedFlags,
