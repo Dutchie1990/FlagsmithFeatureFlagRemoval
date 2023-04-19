@@ -15,9 +15,9 @@ jobs:
         arrays:
           [
             {
-              "ref": "production-careshop",
-              "sourcepath": "apps/careshop/src/config/flagsmithConfig.ts",
-              "flagsmithProjectId": "7064",
+              "ref": "production-qflow",
+              "sourcepath": "apps/qflow/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "6376",
             },
           ]
     steps:
