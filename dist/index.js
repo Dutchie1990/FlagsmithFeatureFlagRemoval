@@ -17390,7 +17390,7 @@ async function run() {
       for (const key in flagsmithFlags) {
         if (Object.hasOwnProperty.call(flagsmithFlags, key)) {
           const element = flagsmithFlags[key];
-          if (typeof githubFlags !== "undefined") {
+          if (typeof githubFlags === "undefined") {
             flagsReadyToArchive.push(element);
           } else if (!githubFlags.includes(element.name)) {
             flagsReadyToArchive.push(element);
