@@ -15,9 +15,9 @@ jobs:
         arrays:
           [
             {
-              "ref": "production-qflow",
-              "sourcepath": "apps/qflow/config/flagsmithConfig.ts",
-              "flagsmithProjectId": "6376",
+              "ref": "production-crm",
+              "sourcepath": "apps/crm/src/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "6432",
             },
           ]
     steps:
