@@ -38,15 +38,21 @@ async function run() {
       ref
     );
 
+    console.log(githubFlags);
+
     const flagsmithFlags = await flagsmithAPI.getFlagsmithFlags(
       flagsmithUrl,
       flagsmithToken
     );
 
+    console.log(flagsmithFlags);
+
     flagsReadyToDelete = await flagsmithAPI.getArchivedFlags(
       flagsmithUrl,
       flagsmithToken
     );
+
+    console.log(flagsReadyToDelete);
 
     for (const key in flagsmithFlags) {
       if (Object.hasOwnProperty.call(flagsmithFlags, key)) {
