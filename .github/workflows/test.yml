@@ -15,9 +15,44 @@ jobs:
         arrays:
           [
             {
+              "ref": "production-qflow",
+              "sourcepath": "apps/qflow/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "6376",
+            },
+            {
               "ref": "production-crm",
               "sourcepath": "apps/crm/src/config/flagsmithConfig.ts",
               "flagsmithProjectId": "6432",
+            },
+            {
+              "ref": "production-careshop",
+              "sourcepath": "apps/careshop/src/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "7064",
+            },
+            {
+              "ref": "production-customer-portal",
+              "sourcepath": "apps/customer-portal/src/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "7739",
+            },
+            {
+              "ref": "production-loan-lease",
+              "sourcepath": "apps/loan-lease/src/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "8279",
+            },
+            {
+              "ref": "production-lgt-client-next",
+              "sourcepath": "apps/lgt-client-next/src/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "8280",
+            },
+            {
+              "ref": "production-credit-card",
+              "sourcepath": "apps/credit-card/src/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "8278",
+            },
+            {
+              "ref": "production-website",
+              "sourcepath": "apps/website/src/config/flagsmithConfig.ts",
+              "flagsmithProjectId": "8088",
             },
           ]
     steps:
