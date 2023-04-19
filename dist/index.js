@@ -49,7 +49,7 @@ async function archiveFlag(url, auth, flagId) {
     url: `${url}${flagId}/`,
     data: data,
     headers: {
-      Authorization: auth,
+      Authorization: `token ${auth}`,
       "Content-Type": "application/json",
     },
   };
@@ -67,7 +67,7 @@ async function deleteFlag(url, auth, flagId) {
     method: "DELETE",
     url: `${url}${flagId}/`,
     headers: {
-      Authorization: auth,
+      Authorization: `token ${auth}`,
     },
   };
   return axios(config)
